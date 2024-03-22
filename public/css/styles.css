@@ -1,0 +1,81 @@
+body {
+    background-color: #3d3d3d; 
+    color: #3b3b3b;
+}
+
+.container {
+    background-color: #002852; 
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+}
+
+h1 {
+    color: #ffffff; 
+}
+
+.btn-primary {
+    background-color: #004691; 
+    border-color: #000000; 
+}
+
+.btn-primary:hover {
+    background-color: #007afc; 
+    border-color: #007afc;
+}
+
+.btn-danger {
+    background-color: #c70114; 
+    border-color: #000000; 
+}
+
+.btn-danger:hover {
+    background-color: #ff1c33; 
+    border-color: #ff1d33; 
+}
+
+.card {
+    margin-bottom: 20px;
+}
+
+.card-header {
+    background-color: #004691;
+    color: #ffffff;
+    border-bottom: none;
+    text-align: center;
+}
+
+.card-footer {
+    background-color: #dddddd;
+    border-top: none;
+}
+
+.table th,
+.table td {
+    border: 1px solid #dee2e6;
+}
+
+.table th {
+    background-color: #004691;
+    color: #fff;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.993);
+}
+
+.custom-btn {
+    background-color: rgb(255, 251, 0);
+    color: black;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.custom-btn:hover {
+    background-color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+}
+
+
+

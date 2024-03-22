@@ -1,20 +1,18 @@
 const { mongoose } = require("../bd/conexion");
+
 const productoSchema = new mongoose.Schema({
     nombre: {
         type: String,
-        require: true,
+        required: true
     },
-    marca: {
+    categoria: {
         type: String,
-        require: true,
+        required: true
     },
-    cantidad: {
+    precio: {
         type: Number,
-        require: true,
-    },
-    estatus: {
-        type: Boolean,
-        default: true,
-    },
+        required: true
+    }
 });
-module.exports = mongoose.model('producto', productoSchema);
+
+module.exports = mongoose.model("Producto", productoSchema);
