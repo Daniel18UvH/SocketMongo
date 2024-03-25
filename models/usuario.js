@@ -1,4 +1,4 @@
-const {mongoose} =require("../bd/conexion");
+const {mongoose} =require("../database/conexion");
 const usuarioSchema = new mongoose.Schema({
     nombre:{
         type:String,
