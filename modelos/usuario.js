@@ -1,6 +1,5 @@
-const {mongoose} =  require ("../bd/conexion");
-
-const usuarioSchema=new mongoose.Schema({
+const {mongoose} =require("../bd/conexion");
+const usuarioSchema = new mongoose.Schema({
     nombre:{
         type:String,
         require:true
@@ -15,8 +14,8 @@ const usuarioSchema=new mongoose.Schema({
     },
     estatus:{
         type:Boolean,
-        default: true
+        default:true
     }
 });
 
-module.exports=mongoose.model("usuario", usuarioSchema);
+module.exports=mongoose.model("usuario",usuarioSchema);
