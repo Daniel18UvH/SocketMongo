@@ -28,6 +28,7 @@ var enviarDatosPro = document.getElementById("enviarDatosPro");
 enviarDatosPro.addEventListener("submit", (e) => {
     e.preventDefault();
     var producto = {
+        id: document.getElementById("id").value,
         nombre: document.getElementById("nombre").value,
         precio: document.getElementById("precio").value,
         cantidad: document.getElementById("cantidad").value
@@ -49,17 +50,21 @@ enviarDatosPro.addEventListener("submit", (e) => {
 
 //Modificar Producto
 function editarProducto(id) {
-    window.location.href = 'editarProducto.html?id=' + id;
+    socket.emit("clienteObtenerProductoPorId", id);
 }
+
+
+socket.on("servidorObtenerProductoPorId", (producto) => {
+    console.log(producto);
+    document.getElementById("id").value = producto._id;
+    document.getElementById("nombre").value = producto.nombre;
+    document.getElementById("precio").value = producto.precio;
+    document.getElementById("cantidad").value = producto.cantidad;
+    document.getElementById("txtNuevoProducto").innerHTML = "Editar producto"
+    document.getElementById("txtGuardarProducto").innerHTML = "Guardar cambios"
+});
 
 //Borrar Producto
 function borrarProducto(id) {
     socket.emit("clienteBorrarProducto", id);
-    socket.on("servidorProductoBorrado", (mensaje) => {
-        mensajeDiv.innerHTML = mensaje;
-        setTimeout(() => {
-            mensajeDiv.innerHTML = "";
-            location.reload();
-        }, 1000);
-    });
 }

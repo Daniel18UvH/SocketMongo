@@ -13,52 +13,38 @@ function socket(io) {
         //Guardar usuario
         socket.on("clienteGuardarUsuario", async (usuario) => {
             try {
-                await new Usuario(usuario).save();
-                io.emit("servidorUsuarioGuardado", "Usuario guardado");
-                console.log("Usuario guardado");
+                if (usuario.id && usuario.id !== "") {
+                    await Usuario.findByIdAndUpdate(usuario.id, usuario);
+                    io.emit("servidorUsuarioGuardado", "Usuario actualizado");
+                }
+                else {
+                    await new Usuario(usuario).save();
+                    io.emit("servidorUsuarioGuardado", "Usuario guardado");
+                }
             } catch (error) {
+                console.log(error);
+            }
+            mostrarUsuarios();
+        });
+
+        //Obtener usuario por id
+        socket.on("clienteObtenerUsuarioPorId", async (id) => {
+            const usuario = await Usuario.findById(id);
+            io.emit("servidorObtenerUsuarioPorId", usuario);
+        });
+
+        //Borrar usuario por id
+        socket.on("clienteBorrarUsuario", async (id) => {
+            try {
+                await Usuario.findByIdAndDelete(id);
+                io.emit("servidorUsuarioGuardado", "Usuario borrado");
+                mostrarUsuarios();
+            }
+            catch (error) {
                 console.log(error);
             }
         });
 
-        // Editar usuario 
-        socket.on("clienteEditarUsuarioId", async (id) => {
-            try {
-                const usuario = await Usuario.findById(id);
-                io.emit("servidorUsuarioEditadoId", usuario);
-            } catch (err) {
-                console.error("Error al editar usuario");
-            }
-        });
-
-        // Editar usuario
-        socket.on("clienteEditarUsuario", async (usuarioEditado) => {
-            try {
-                const usuarioActualizado = await Usuario.findByIdAndUpdate(
-                    usuarioEditado._id,
-                    {
-                        nombre: usuarioEditado.nombre,
-                        usuario: usuarioEditado.usuario,
-                        password: usuarioEditado.password,
-                    },
-                    { new: true }
-                ); // Para obtener el documento actualizado
-
-                io.emit("servidorUsuarioEditado", usuarioActualizado);
-            } catch (err) {
-                console.error("Error al editar usuario:", err);
-            }
-        });
-
-        // Borrar usuario
-        socket.on("clienteBorrarUsuario", async (id) => {
-            try {
-                await Usuario.findByIdAndDelete(id);
-                io.emit("servidorUsuarioBorrado", "Usuario borrado");
-            } catch (err) {
-                console.error("Error al borrar usuario");
-            }
-        });
 
         // Mostrar Productos
         mostrarProductos();
@@ -74,41 +60,26 @@ function socket(io) {
         // Guardar Productos
         socket.on("clienteGuardarPro", async (producto) => {
             try {
-                await new Producto(producto).save();
-                io.emit("servidorProductoGuardado", "Producto guardado");
-                console.log("Producto guardado");
+                if (producto.id && producto.id !== "") {
+                    await Producto.findByIdAndUpdate(producto.id, producto);
+                    io.emit("servidorProductoGuardado", "Producto actualizado");
+                } else {
+                    await new Producto(producto).save();
+                    io.emit("servidorProductoGuardado", "Producto guardado");
+                }
             } catch (error) {
                 console.log(error);
             }
+            mostrarProductos();
         });
 
-        // Editar producto
-        socket.on("clienteEditarProducto", async (id) => {
+        // Obtener producto por id
+        socket.on("clienteObtenerProductoPorId", async (id) => {
             try {
                 const producto = await Producto.findById(id);
-                io.emit("servidorProductoEditado", producto);
-            } catch (err) {
-                console.error("Error al editar producto");
-            }
-        });
-
-        // Editar producto
-        socket.on("clienteEditarProducto", async (productoEditado) => {
-            try {
-                const productoActualizado = await Producto.findByIdAndUpdate(
-                    productoEditado._id,
-                    {
-                        id: productoEditado.id,
-                        nombre: productoEditado.nombre,
-                        precio: productoEditado.precio,
-                        cantidad: productoEditado.cantidad,
-                    },
-                    { new: true }
-                );
-
-                io.emit("servidorProductoEditado", productoActualizado);
-            } catch (err) {
-                console.error("Error al editar producto:", err);
+                io.emit("servidorObtenerProductoPorId", producto);
+            } catch (error) {
+                console.log(error);
             }
         });
 
@@ -122,6 +93,8 @@ function socket(io) {
                 console.error("Error al borrar producto");
             }
         });
+
+
     });//Fin de io.on("connection")
 }
 

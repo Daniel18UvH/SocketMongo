@@ -13,7 +13,7 @@ socket.on("servidorEnviarUsuarios", (usuarios) => {
             <td>${usuario.usuario}</td>
             <td>${usuario.password}</td>
             <td>
-                <a href="#" onClick="editarUsuario('${usuario._id}')">Editar</a>
+                <a href="#" onClick="editarUsuario('${usuario._id}')">Editar /</a>
                 <a href="#" onClick="borrarUsuario('${usuario._id}')">Borrar</a>
             </td>
         </tr>
@@ -27,6 +27,7 @@ var enviarDatos = document.getElementById("enviarDatos");
 enviarDatos.addEventListener("submit", (e) => {
     e.preventDefault();
     var usuario = {
+        id: document.getElementById("id").value,
         nombre: document.getElementById("nombre").value,
         usuario: document.getElementById("usuario").value,
         password: document.getElementById("password").value
@@ -47,20 +48,24 @@ enviarDatos.addEventListener("submit", (e) => {
 
 });
 
-
 //Modificar un registro de MongoDB de usuarios
 function editarUsuario(id) {
-    window.location.href = 'editarUsuario.html?id=' + id;
+    socket.emit("clienteObtenerUsuarioPorId", id);
 }
+
+
+socket.on("servidorObtenerUsuarioPorId", (usuario)=>{
+    console.log(usuario);
+    document.getElementById("id").value=usuario._id
+    document.getElementById("nombre").value=usuario.nombre
+    document.getElementById("usuario").value=usuario.usuario
+    document.getElementById("password").value=usuario.password
+    document.getElementById("txtNuevoUsuario").innerHTML="Editar usuario"
+    document.getElementById("txtGuardarUsuario").innerHTML="Guardar cambios"
+})
+
 //Eliminar un registro de MongoDB de usuarios
 function borrarUsuario(id) {
     socket.emit("clienteBorrarUsuario", id);
-    socket.on("servidorUsuarioBorrado", (mensaje) => {
-        mensajeDiv.innerHTML = mensaje;
-        setTimeout(() => {
-            mensajeDiv.innerHTML = "";
-            location.reload();
-        }, 1000);
-    })
 }
 
